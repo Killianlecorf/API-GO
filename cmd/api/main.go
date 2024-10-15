@@ -1,16 +1,29 @@
-// cmd/api/main.go
 package main
 
 import (
-    "fmt"
-    "log"
-    "net/http"
-    "example.com/mon-api/routes"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+
+	"mon-api/db"
+
+	routes "mon-api/Routes"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-    router := routes.InitRoutes()
 
-    fmt.Println("Serveur démarré sur le port 8080")
-    log.Fatal(http.ListenAndServe(":8080", router))
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Erreur lors du chargement du fichier .env")
+	}
+
+	db.InitDB()
+
+	router := routes.InitRoutes()
+	port := os.Getenv("PORT")
+	fmt.Println("Serveur démarré sur le port " + port)
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }

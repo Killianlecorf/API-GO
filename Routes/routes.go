@@ -1,15 +1,19 @@
 package routes
 
 import (
-    "github.com/gorilla/mux"
-    "example.com/mon-api/handlers"
+	"mon-api/handlers"
+
+	"github.com/gorilla/mux"
 )
 
 func InitRoutes() *mux.Router {
-    router := mux.NewRouter()
+	router := mux.NewRouter()
 
-    router.HandleFunc("/api/message", handlers.GetMessage).Methods("GET")
-    router.HandleFunc("/api/message", handlers.PostMessage).Methods("POST")
+	router.HandleFunc("/api/users", handlers.CreateUser).Methods("POST")
+	router.HandleFunc("/api/users", handlers.GetAllUsers).Methods("GET")
+	router.HandleFunc("/api/users/{id:[0-9]+}", handlers.GetUserByID).Methods("GET")
+	router.HandleFunc("/api/users/{id:[0-9]+}", handlers.UpdateUser).Methods("PUT")
+	router.HandleFunc("/api/users/{id:[0-9]+}", handlers.DeleteUser).Methods("DELETE")
 
-    return router
+	return router
 }
